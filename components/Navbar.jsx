@@ -42,39 +42,58 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <div className="relative group">
-              <button className="font-medium">{user.role || "Account"}</button>
+            <div className="relative">
+      {/* Trigger */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2"
+      >
+        Account ⌄
+      </button>
 
-              {/* dropdown menu */}
-              <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md hidden group-hover:block">
-                {user?.role === "ADMIN" && (
-                  <div className="block">
-                    <Link href="/admin/dashboard">Dashboard</Link>{" "}
-                    <Link href="/admin/orders" className="hover:underline">
-                      Manage Orders
-                    </Link>
-                  </div>
-                )}
-                <Link
-                  href="/orders"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  My Orders
-                </Link>
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={logout}
-                  className="bg-red-400 hover:bg-red-300 w-full text-left text-white rounded"
-                >
-                  Logout
-                </button>
-              </div>
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute right-0 mt-2 w-44 bg-white border rounded-md shadow-lg z-50">
+          {user?.role === "ADMIN" && (
+            <div className="border-b">
+              <Link
+                href="/admin/dashboard"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/admin/orders"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Manage Orders
+              </Link>
             </div>
+          )}
+
+          <Link
+            href="/orders"
+            className="block px-4 py-2 hover:bg-gray-100"
+          >
+            My Orders
+          </Link>
+
+          <Link
+            href="/profile"
+            className="block px-4 py-2 hover:bg-gray-100"
+          >
+            Profile
+          </Link>
+
+          <button
+            onClick={logout}
+            className="w-full text-left px-4 py-2 text-white bg-red-500 hover:bg-red-400 rounded-b-md"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
           )}
         </nav>
 
@@ -162,7 +181,10 @@ export default function Navbar() {
                 <Link href="/orders" onClick={() => setOpen(false)}>Orders</Link>
                 <Link href="/profile" onClick={() => setOpen(false)}>Profile</Link>
                 <button
-                  onClick={logout}
+                  onClick={async()=> {
+                    setOpen(false);
+                    await logout();
+                  }}
                   className="bg-red-400 hover:bg-red-300 text-white px-3 py-1 rounded"
                   >
                   Logout

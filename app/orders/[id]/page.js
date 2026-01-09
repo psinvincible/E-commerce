@@ -1,3 +1,4 @@
+import OrderCancelBtn from "@/components/OrderCancelBtn";
 import { connectDB } from "@/lib/db";
 import { getUserFromCookie } from "@/lib/getUser";
 import Order from "@/models/Order";
@@ -20,6 +21,7 @@ export default async function OrderDetaislPage({params}){
     if(!order){
         return <p>Order not found!</p>
     }
+    const safeOrders = JSON.parse(JSON.stringify(order));
 
     return (
         <div className="p-6 max-w-4xl mx-auto">
@@ -28,6 +30,7 @@ export default async function OrderDetaislPage({params}){
             <div className="mb-4">
                 <span className="font-semibold">Status:</span>{" "}
                 <span className="px-3 py-1 bg-gray-200 rounded">{order.status}</span>
+                {order.cancelReason && (<span>Update: {order.cancelReason}</span>)}
             </div>
 
             <div className="border p-4 rounded mb-6">
@@ -55,10 +58,11 @@ export default async function OrderDetaislPage({params}){
                 ))}
             </div>
 
-            <div className="border p-4 rounded">
+            <div className="border p-4 rounded mb-6">
                 <p><strong>Payment: </strong>{order.paymentMethod}</p>
                 <p><strong>Total Amount: </strong>₹{order.totalAmount}</p>
             </div>
+            <OrderCancelBtn order={safeOrders} orderId={safeOrders._id}/>
         </div>
     )
 

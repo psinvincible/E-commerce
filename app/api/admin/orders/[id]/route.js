@@ -15,12 +15,13 @@ export async function PUT(req, { params }) {
   }
 
   const {status} = await req.json();
+  console.log(id, status);
   if(!status){
     return Response.json({error: "Status is required!"},{status: 400})
   }
 
   const order = await Order.findByIdAndUpdate(
-    id, {status}, {new: true}
+    id, {status, updatedAt: Date.now()}, {new: true}
   )
   
   return Response.json(order);

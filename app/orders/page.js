@@ -34,7 +34,8 @@ export default async function OrderPage({searchParams}) {
       {orders.map((order) => (
         <div key={order._id} className="border mb-4 p-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</span>
+            <span className="text-sm text-gray-500">Order Date: {new Date(order.createdAt).toLocaleDateString()}</span>
+            <span className="text-sm text-gray-500">Last Update: {new Date(order.updateAt).toLocaleDateString()}</span>
             <span className={`px-3 py-1 text-sm rounded-full ${order.status === "PLACED" ? "bg-yello-100 text-yellow-700" : order.status === "SHIPPED" ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"}`}>{order.status}</span>
             <p className="font-semibold mb-2">Total: ₹{order.totalAmount}</p>
             <div className="space-y-2">

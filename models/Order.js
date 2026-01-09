@@ -42,8 +42,11 @@ const orderSchema = new mongoose.Schema(
     totalAmount: Number,
     status: {
       type: String,
-      enum: ["PLACED", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"],
+      enum: ["PLACED", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLATION_REQUESTED", "CANCELLED"],
       default: "PLACED",
+    },
+    cancelReason: {
+      type: String,
     },
   },
   { timestamps: true }

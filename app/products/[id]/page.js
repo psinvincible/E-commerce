@@ -1,4 +1,5 @@
 import AddToCartBtn from "@/components/AddToCartBtn";
+import Review from "@/components/Review";
 
 export default async function ProductPage({params}) {
     const {id} = await params;
@@ -16,8 +17,10 @@ export default async function ProductPage({params}) {
         <h1 className="text-2xl font-bold">{product.name}</h1>
         <p className="text-xl">₹{product.price}</p>
         <p className="mt-4">{product.description}</p>
-        <AddToCartBtn productId={id}/>        
+        <AddToCartBtn productId={id}/>
       </div>
+      <Review productId={product._id.toString()}/>
     </div>
+
   );    
 }
