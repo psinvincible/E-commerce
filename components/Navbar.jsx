@@ -5,10 +5,16 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { GrClose } from "react-icons/gr";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { VscAccount } from "react-icons/vsc";
 
 export default function Navbar() {
-  const { user, loading, logout } = useAuth();
   const [open, setOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  
+  const { user, loading, logout } = useAuth();
   const { count } = useCart();
 
   if (loading) return null;
@@ -16,8 +22,8 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b">
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-        <Link href="/" className="font-bold text-xl">
-          E-Commerce
+        <Link href="/" className="text-xl font-extrabold tracking-wide">
+          <span className="text-cyan-600">E</span>-Commerce
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -42,103 +48,110 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <div className="relative">
-      {/* Trigger */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex items-center gap-2"
-      >
-        Account ⌄
-      </button>
-
-      {/* Dropdown */}
-      {open && (
-        <div className="absolute right-0 mt-2 w-44 bg-white border rounded-md shadow-lg z-50">
-          {user?.role === "ADMIN" && (
-            <div className="border-b">
-              <Link
-                href="/admin/dashboard"
-                className="block px-4 py-2 hover:bg-gray-100"
+            <div className="flex items-center gap-2">
+              {/* services section */}
+            <div className="relative">  
+              <button
+                onClick={() => setOpenDropdown(openDropdown === "services" ? null : "services")}
+                className="flex items-center gap-1 px-3 py-2 rounded-md hover:bg-gray-100"
               >
-                Dashboard
-              </Link>
-              <Link
-                href="/admin/orders"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Manage Orders
-              </Link>
+                Services
+                <RiArrowDropDownLine size={20} />
+              </button>
+              {openDropdown === "services" && (
+                <div className="absolute left-0 mt-2 w-37 bg-white rounded-lg shadow-xl border overflow-hidden">
+                  {user?.role === "ADMIN" && (
+                    <div className="">
+                      <Link
+                        href="/admin/dashboard"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/admin/products"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Manage Products
+                      </Link>
+                      <Link
+                        href="/admin/orders"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Manage Orders
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-          )}
+            {/* Account SEction */}
+            <div className="relative">  
+              <button
+                onClick={() => setOpenDropdown(openDropdown === "accounts" ? null : "accounts")}
+                className="flex items-center  py-2 rounded-md"
+              >
+                <VscAccount size={20} />
+              </button>
 
-          <Link
-            href="/orders"
-            className="block px-4 py-2 hover:bg-gray-100"
-          >
-            My Orders
-          </Link>
+      
+              {openDropdown === "accounts" && (
+                <div className="absolute right-0 mt-2 w-37 bg-white rounded-lg shadow-xl border overflow-hidden">
+                  <Link
+                    href="/orders"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    My Orders
+                  </Link>
 
-          <Link
-            href="/profile"
-            className="block px-4 py-2 hover:bg-gray-100"
-          >
-            Profile
-          </Link>
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
 
-          <button
-            onClick={logout}
-            className="w-full text-left px-4 py-2 text-white bg-red-500 hover:bg-red-400 rounded-b-md"
-          >
-            Logout
-          </button>
-        </div>
-      )}
-    </div>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 hover:bg-red-300 rounded-b-md"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+            </div>
           )}
         </nav>
 
-        {/* mobile view button  and hamburger menu*/}
+        {/* hamburger menu*/}
         <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
-          ☰
+          <RxHamburgerMenu />
         </button>
       </div>
 
       {/* mobile view */}
       {open && (
         <div
-          className={`md:hidden fixed top-0 right-0 z-50 h-full w-[70%] shadow-lg transition-transform duration-300 ease-in-out bg-white/50 backdrop-blur-md ${
+          className={`md:hidden fixed top-0 right-0 z-50 h-full w-[70%] shadow-lg transition-transform duration-300 ease-in-out bg-white/70 backdrop-blur-md ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div>
-            <svg onClick={() => setOpen(false)} width="30" height="30" viewBox="0 0 100 100" fill="none" className="m-2">
-              <circle cx="50" cy="50" r="45" stroke="#22D3EE" strokeWidth="10" />
-              <line
-                x1="32"
-                y1="32"
-                x2="68"
-                y2="68"
-                stroke={"#22D3EE"}
-                strokeWidth="10"
-                strokeLinecap="round"
-                />
-              <line
-                x1="68"
-                y1="32"
-                x2="32"
-                y2="68"
-                stroke={"#22D3EE"}
-                strokeWidth="10"
-                strokeLinecap="round"
-              />
-            </svg>
-                <p className="text-xl font-bold text-center">E-commerce</p>
+          <div className="flex justify-between items-center px-5 py-5 border-b border-gray-500">
+            <GrClose
+              className="text-xl cursor-pointer"
+              onClick={() => setOpen(false)}
+            />
+            <p className="text-lg font-extrabold tracking-wide">
+              <span className="text-cyan-600">E</span>-Commerce
+            </p>
           </div>
-          <div className="flex flex-col gap-4 p-4 border-b">
+
+          <div className="flex flex-col gap-3 mt-3">
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="w-full text-center"
+              className="block text-center rounded mx-20 bg-gray-200"
             >
               Home
             </Link>
@@ -146,7 +159,7 @@ export default function Navbar() {
             <Link
               href="/products"
               onClick={() => setOpen(false)}
-              className="w-full text-center"
+              className="block text-center rounded mx-20 bg-gray-200"
             >
               Store
             </Link>
@@ -154,7 +167,7 @@ export default function Navbar() {
             <Link
               href="/cart"
               onClick={() => setOpen(false)}
-              className="w-full text-center"
+              className="block text-center rounded mx-20 bg-gray-200"
             >
               Cart ({count})
             </Link>
@@ -169,27 +182,49 @@ export default function Navbar() {
               </Link>
             ) : (
               <>
-                  <div className="flex flex-col gap-4 p-4">
-                {user.role === "ADMIN" && (
-                    <>
-                    <Link href="/admin/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
-                    <Link href="/admin/orders" onClick={() => setOpen(false)} className="hover:underline">
-                      Manage Orders
-                    </Link>
-                    </>
-                )}
-                <Link href="/orders" onClick={() => setOpen(false)}>Orders</Link>
-                <Link href="/profile" onClick={() => setOpen(false)}>Profile</Link>
-                <button
-                  onClick={async()=> {
-                    setOpen(false);
-                    await logout();
-                  }}
-                  className="bg-red-400 hover:bg-red-300 text-white px-3 py-1 rounded"
+                <div className="flex flex-col gap-3 mt-3">
+                  {user.role === "ADMIN" && (
+                    <div>
+                      <p className="text-center text-bold text-gray-500 border mx-20 rounded border-gray-500">Admin Section</p>
+                      <Link
+                        href="/admin/dashboard"
+                        onClick={() => setOpen(false)}
+                        className="block text-center rounded mx-20 my-2 bg-gray-200"
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/admin/products"
+                        onClick={() => setOpen(false)}
+                        className="block text-center rounded mx-20 my-2 bg-gray-200"
+                      >
+                        Manage Products
+                      </Link>
+                      <Link
+                        href="/admin/orders"
+                        onClick={() => setOpen(false)}
+                        className="block text-center rounded mx-20 my-2 bg-gray-200"
+                      >
+                        Manage Orders
+                      </Link>
+                    </div>
+                  )}
+                  <Link href="/orders" onClick={() => setOpen(false)} className="block text-center rounded mx-20 bg-gray-200">
+                    Orders
+                  </Link>
+                  <Link href="/profile" onClick={() => setOpen(false)} className="block text-center rounded mx-20 bg-gray-200">
+                    Profile
+                  </Link>
+                  <button
+                    onClick={async () => {
+                      setOpen(false);
+                      await logout();
+                    }}
+                    className="bg-red-400 hover:bg-red-300 mx-20 text-white px-3 py-1 rounded"
                   >
-                  Logout
-                </button>
-                  </div>
+                    Logout
+                  </button>
+                </div>
               </>
             )}
           </div>
