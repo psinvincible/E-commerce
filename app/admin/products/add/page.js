@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const adminProducts = () => {
+const AdminAddProducts = () => {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState({
@@ -19,13 +19,13 @@ const adminProducts = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImageUpload = async(e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
 
-    if(!file) return;
+    if (!file) return;
 
     const error = validateImage(file);
-    if(error){
+    if (error) {
       toast.error(error);
       return;
     }
@@ -38,25 +38,24 @@ const adminProducts = () => {
     try {
       const res = await fetch("/api/upload", {
         method: "POST",
-        body: data
-      })
+        body: data,
+      });
 
       const result = await res.json();
 
-      if(!res.ok){
+      if (!res.ok) {
         toast.error(result.error);
         return;
       }
 
-      setForm({...form, image: result.url});
+      setForm({ ...form, image: result.url });
       toast.success("Image uploaded");
     } catch {
-      toast.error("Upload failed!")
-    }finally {
-      toast.dismiss();
+      toast.error("Upload failed!");
+    } finally {
       setUploading(false);
     }
-  }
+  };
 
   const validate = () => {
     if (!form.name.trim()) return "Name is required!";
@@ -75,7 +74,7 @@ const adminProducts = () => {
       return "Image must be under 2MB only";
     }
     return null;
-  }
+  };
 
   const addProduct = async (e) => {
     e.preventDefault();
@@ -86,8 +85,9 @@ const adminProducts = () => {
       return;
     }
 
-    if(!form.image){
+    if (!form.image) {
       toast.error("Please upload image");
+      return;
     }
 
     setLoading(true);
@@ -106,79 +106,124 @@ const adminProducts = () => {
       toast.success("Product saved successfully");
       setForm({
         name: "",
-    price: "",
-    category: "",
-    stock: "",
-    image: "",
-    description: "",
-      })
+        price: "",
+        category: "",
+        stock: "",
+        image: "",
+        description: "",
+      });
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
-    
   };
 
   return (
-    <div className="p-6 max-w-xl">
-      <h1 className="text-2xl font-bold mb-4">Add Product</h1>
-      <form onSubmit={addProduct} className="space-y-3 ">
-        <input
-          name="name"
-          type="text"
-          placeholder="Name"
-          onChange={handleChange}
-          className="input outline-amber-300 border"
-        />
-        <input
-          name="price"
-          type="number"
-          placeholder="Price"
-          onChange={handleChange}
-          className="input border"
-        />
-        <input
-          name="category"
-          placeholder="Category"
-          onChange={handleChange}
-          className="input border"
-        />
-        <input
-          name="stock"
-          type="number"
-          placeholder="No. of Stocks"
-          onChange={handleChange}
-          className="input border"
-        />
-        <input 
-          name="image"
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          disabled={uploading}
-          className="border"
-        />
-        {form.image && (
-          <img src={form.image} alt="preview" className="w-32 h-32 object-cover border" />
-        )}
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Add Product</h1>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-          className="input border"
-        />
+      <form
+        onSubmit={addProduct}
+        className="bg-white rounded-xl shadow-md p-6  space-y-5 "
+      >
+        <div>
+          <label className="block text-sm font-medium mb-1">Product name</label>
+          <input
+            name="name"
+            type="text"
+            value={form.name}
+            disabled={loading}
+            placeholder="Name"
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-black"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+          <div>
+            <label className="block text-sm font-medium mb-1">Price</label>
+            <input
+              name="price"
+              type="number"
+              value={form.price}
+              disabled={loading}
+              placeholder="Price"
+              onChange={handleChange}
+              className="w-full rounded-lg px-3 py-2 border"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Stock</label>
+            <input
+              name="stock"
+              type="number"
+              value={form.stock}
+              disabled={loading}
+              placeholder="No. of Stocks"
+              onChange={handleChange}
+              className="w-full rounded-lg px-3 py-2 border"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Category</label>
+          <input
+            name="category"
+            placeholder="Category"
+            value={form.category}
+            disabled={loading}
+            onChange={handleChange}
+            className="w-full rounded-lg px-3 py-2 border"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Product Image
+          </label>
+          <input
+            name="image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={uploading}
+            className="border"
+          />
+          {uploading && (
+            <p className="text-sm text-gray-500  mt-1">Uploading Image...</p>
+          )}
+          {form.image && (
+            <img
+              src={form.image}
+              alt="preview"
+              className="w-32 h-32 object-cover border mt-3 rounded"
+            />
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Description</label>
+          <textarea
+            name="description"
+            rows={4}
+            value={form.description}
+            disabled={loading}
+            placeholder="Description"
+            onChange={handleChange}
+            className="w-full rounded-lg px-3 py-2 border"
+          />
+        </div>
         <button
           type="submit"
           className="bg-black text-white px-2 py-2 rounded"
-          disabled={loading}
+          disabled={loading || uploading}
         >
-          {loading ? "Saving..." : "Add Product"}
+          {loading ? "Saving Product..." : "Add Product"}
         </button>
       </form>
     </div>
   );
 };
 
-export default adminProducts;
+export default AdminAddProducts;

@@ -9,6 +9,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { GrClose } from "react-icons/gr";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { VscAccount } from "react-icons/vsc";
+import { IoCartOutline } from "react-icons/io5";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function Navbar() {
           </Link>
 
           <Link href="/cart" className="relative">
-            Cart
+            <IoCartOutline />
             {count > 0 && (
               <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">
                 {count}
@@ -43,7 +44,7 @@ export default function Navbar() {
           {!user ? (
             <Link
               href="/login"
-              className="bg-cyan-300 rounded p-2 hover:bg-cyan-200"
+              className="bg-cyan-300 rounded p-2 hover:bg-cyan-200 shadow-md"
             >
               Login
             </Link>
