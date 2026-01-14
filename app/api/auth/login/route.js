@@ -10,18 +10,18 @@ export async function POST(req) {
 
     const user = await User.findOne({email});
     if(!user) {
-        return Response.json({error: "Incorrect email or password"});
+        return Response.json({error: "Incorrect email or password"},{status: 401});
     };
 
     const matchPassword = await bcrypt.compare(password, user.password);
     if(!matchPassword) {
-        return Response.json({error: "Incorrect email or password"});
+        return Response.json({error: "Incorrect email or password"},{status: 401});
     };
 
     const token = generateToken(user);
 
     const response = NextResponse.json({
-        message: "Login Successful",
+        message: "Login Success",
     })
 
     response.cookies.set("token", token, {

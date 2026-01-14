@@ -1,5 +1,6 @@
 "use client";
 
+import Searchbar from "@/components/SearchBar";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
@@ -35,6 +36,8 @@ export default function ProductPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 ">
       <h1 className="text-2xl font-bold mb-6">All Products</h1>
+      <div className="p-4 space-y-6">
+        <Searchbar />
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
         {products.map((product) => (
           <a
@@ -59,6 +62,7 @@ export default function ProductPage() {
             </div>
           </a>
         ))}
+      </div>
       </div>
     </div>
   );

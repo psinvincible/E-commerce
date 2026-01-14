@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { BiHide, BiShowAlt } from "react-icons/bi";
 
 const LoginPage = () => {
   const { user, fetchUser } = useAuth();
@@ -48,13 +49,15 @@ const LoginPage = () => {
      const data = await res.json();
 
      if(!res.ok){
-      throw new Error(data.error || "Login failed!");
+      toast.error(data.error || "Login failed!");
+      setLoading(false);
+      return;
      }
-
      await fetchUser();
-     toast.success("Login Successfull!");  
+     toast.success("Login Success");  
     } catch (error) {
       toast.error(error.message);
+      return;
     }finally {
       setLoading(false);
     }
@@ -119,7 +122,7 @@ const LoginPage = () => {
           onClick={() => setShowPassword(!showPassword)}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-black transition"
         >
-          {showPassword ? "HIDE" : "SHOW"}
+          {showPassword ? <BiHide size={20}/> : <BiShowAlt size={20}/>}
         </button>
       </div>
     </div>
@@ -139,6 +142,15 @@ const LoginPage = () => {
         className="text-black font-medium cursor-pointer hover:underline"
       >
         Sign up
+      </span>
+    </p>
+    <p className="text-sm text-center text-gray-600">
+      Forget Password?{" "}
+      <span
+        onClick={() => router.push("/forget-password")}
+        className="text-black font-medium cursor-pointer hover:underline"
+      >
+        Click here
       </span>
     </p>
   </form>
