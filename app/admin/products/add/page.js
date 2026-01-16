@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const AdminAddProducts = () => {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [categories, setCategories] = useState([])
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -14,6 +15,12 @@ const AdminAddProducts = () => {
     image: "",
     description: "",
   });
+
+  useEffect(() => {
+    fetch("/api/admin/categories").then(res => res.json()).then(data => setCategories(data));
+  
+  }, [])
+  
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -61,6 +68,7 @@ const AdminAddProducts = () => {
     if (!form.name.trim()) return "Name is required!";
     if (form.price <= 0) return "Price must be greater than 0!";
     if (form.stock < 0) return "Stock cannot be negative";
+    if(!form.category) return "Please Select Category";
 
     return null;
   };
@@ -169,14 +177,12 @@ const AdminAddProducts = () => {
 
         <div>
           <label className="block text-sm font-medium mb-1">Category</label>
-          <input
-            name="category"
-            placeholder="Category"
-            value={form.category}
-            disabled={loading}
-            onChange={handleChange}
-            className="w-full rounded-lg px-3 py-2 border"
-          />
+          <select name="category" onChange={handleChange} value={form.category} className="w-full border rounded-lg px-3 py-2">
+            <option value="">Select Category</option>
+             {categories.filter(category => category.isActive).map((category) => (
+                <option key={category._id} value={category._id}>{category.name}</option>
+              ))}
+          </select>
         </div>
 
         <div>

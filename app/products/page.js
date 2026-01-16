@@ -1,24 +1,32 @@
 "use client";
 
 import Searchbar from "@/components/SearchBar";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [pageLoading, setPageLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") || "";
+  const page = Number(searchParams.get("page")) || 1;
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch("/api/products", {
+      setLoading(true);
+      const res = await fetch(`/api/products?q=${query}&page=${page}`, {
         cache: "no-store",
       });
 
       const products = await res.json();
       setProducts(products);
+      setLoading(false);
       setPageLoading(false);
     };
     fetchProducts();
-  }, []);
+  }, [query, page]);
 
   if (pageLoading) {
     return (
@@ -32,12 +40,19 @@ export default function ProductPage() {
       </div>
     );
   }
+  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 ">
       <h1 className="text-2xl font-bold mb-6">All Products</h1>
       <div className="p-4 space-y-6">
         <Searchbar />
+        {query && (
+          <p className="mb-4 text-sm text-gray-600">Showing results for <span className="font-semibold">{query}</span></p>
+        )}
+        {!loading && products.length === 0 && (
+          <p className="text-center text-gray-500">No products found for "{query}"</p>
+        )}
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
         {products.map((product) => (
           <a

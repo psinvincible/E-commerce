@@ -17,7 +17,8 @@ export default function Searchbar() {
             router.push("/products");
             return;
         }
-        router.push(`/products?search=${encodeURIComponent(search)}`);
+        router.push(`/products?q=${encodeURIComponent(search)}`);
+        setSearch("");
     }
     return (
         <form onSubmit={handleSearch} className="w-full max-w-xl mx-auto flex items-center gap-2 bg-white border-rounded-full px-4 py-2 shadow-sm">

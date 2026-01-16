@@ -10,13 +10,24 @@ import { GrClose } from "react-icons/gr";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { VscAccount } from "react-icons/vsc";
 import { IoCartOutline } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [search, setSearch] = useState("");
   
   const { user, loading, logout } = useAuth();
   const { count } = useCart();
+  const router = useRouter();
+
+const handleSearch = (e) => {
+  e.preventDefault();
+  if(!search.trim()) return;
+
+  router.push(`/products?q=${encodeURIComponent(search.trim())}`);
+  setSearch("");
+}
 
   if (loading) return null;
 
@@ -31,9 +42,14 @@ export default function Navbar() {
           <Link href="/products" className="hover:text-black text-gray-600">
             Store
           </Link>
+          
+          <form onSubmit={handleSearch} className="hidden md:block">
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Products..." className="border rounded-lg px-3 py-1.5 text-sm w-56 focus:ring-2 focus:ring-black"></input>
+          </form>
 
+          {/* Cart */}
           <Link href="/cart" className="relative">
-            <IoCartOutline />
+            <IoCartOutline size={18}/>
             {count > 0 && (
               <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">
                 {count}
@@ -50,7 +66,8 @@ export default function Navbar() {
             </Link>
           ) : (
             <div className="flex items-center gap-2">
-              {/* services section */}
+              {/* services section ADMIN */}
+              {user?.role === "ADMIN" && (
             <div className="relative">  
               <button
                 onClick={() => setOpenDropdown(openDropdown === "services" ? null : "services")}
@@ -61,13 +78,19 @@ export default function Navbar() {
               </button>
               {openDropdown === "services" && (
                 <div className="absolute left-0 mt-2 w-37 bg-white rounded-lg shadow-xl border overflow-hidden">
-                  {user?.role === "ADMIN" && (
+                  
                     <div className="">
                       <Link
                         href="/admin/dashboard"
                         className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
                         Dashboard
+                      </Link>
+                      <Link
+                        href="/admin/categories"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Categories
                       </Link>
                       <Link
                         href="/admin/products"
@@ -82,10 +105,10 @@ export default function Navbar() {
                         Manage Orders
                       </Link>
                     </div>
-                  )}
                 </div>
               )}
             </div>
+             )}
             {/* Account SEction */}
             <div className="relative">  
               <button
