@@ -19,7 +19,7 @@ export default function AdminProductPage() {
       });
 
       const data = await res.json();
-      setProducts(data);
+      setProducts(data.products);
       setPageLoading(false);
     };
     fetchProducts();
@@ -71,7 +71,7 @@ export default function AdminProductPage() {
                 <td className="text-center p-3">{p.name}</td>
                 <td className="text-center p-3">₹{p.price}</td>
                 <td className="text-center p-3">{p.stock}</td>
-                <td className="text-center p-3">{p.category}</td>
+                <td className="text-center p-3">{typeof p.category === 'object' ? p.category?.name : p.category}</td>
                 <td className="text-center p-3">{p.description}</td>
                 <td className="text-center p-3 flex gap-3">
                     <Link href={`/admin/products/edit/${p._id}`} className="bg-blue-500 hover:bg-blue-400 cursor-pointer text-white rounded m-1 p-1">Edit</Link>
@@ -97,6 +97,7 @@ export default function AdminProductPage() {
             <div className="flex-1">
               <h2 className="font-semibold ">{product.name}</h2>
               <p className="text-sm text-gray-500">₹{product.price}</p>
+              <p className="text-xs text-gray-500">{typeof product.category === 'object' ? product.category?.name : product.category}</p>
               <p className={`text-xs mt-1 ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>{product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
               <div className="flex gap-4 mt-3">
                 <Link href={`/admin/products/edit/${product._id}`} className="bg-blue-500 hover:bg-blue-400 cursor-pointer text-white rounded m-1 p-1">Edit</Link>

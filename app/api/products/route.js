@@ -69,8 +69,9 @@ export async function GET(req){
 
         const products = await Product.find(filter).populate("category", "name slug").skip(skip).limit(limit).sort({createdAt: -1});
         const total = await Product.countDocuments(filter);
+        
 
-        return Response.json(products, {pagination: {total, page, pages: Math.ceil(total / limit) }})
+        return Response.json({products, pagination: {total, page, pages: Math.ceil(total / limit) }})
     } catch (error) {
         return Response.json({error: "failed to fetch products!"},{status: 500});
     }

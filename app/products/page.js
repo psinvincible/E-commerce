@@ -1,34 +1,61 @@
 "use client";
 
+import CategorySidebar from "@/components/products/Category";
+import ProductGrid from "@/components/products/ProductGrid";
+import ProductPagination from "@/components/products/ProductPagination";
 import Searchbar from "@/components/SearchBar";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProductPage() {
   const [pageLoading, setPageLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState({
+    pages: 1,
+    page: 1,
+  });
+  const [categories, setCategories] = useState([]);
 
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const category = searchParams.get("category") || "";
   const query = searchParams.get("q") || "";
   const page = Number(searchParams.get("page")) || 1;
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const res = await fetch(`/api/products?q=${query}&page=${page}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `/api/products?q=${query}&category=${category}&page=${page}`,
+        {
+          cache: "no-store",
+        }
+      );
 
-      const products = await res.json();
-      setProducts(products);
+      const data = await res.json();
+      setProducts(data.products);
+      setPagination(data.pagination);
       setLoading(false);
       setPageLoading(false);
     };
-    fetchProducts();
-  }, [query, page]);
 
-  if (pageLoading) {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
+
+    fetchProducts();
+  }, [query, page, category]);
+
+  const changePage = (page) => {
+    router.push(`/products?q=${query}&category=${category}&page=${page}`);
+  };
+
+  const handleCategory = (categoryId) => {
+    router.push(`/products?q=${query}&category=${categoryId}&page=1`);
+  };
+
+  if (pageLoading || loading) {
     return (
       <div className="p-6 animate-pulse">
         <div className="h-6 bg-gray-300 w-1/3 mb-4"></div>
@@ -40,7 +67,6 @@ export default function ProductPage() {
       </div>
     );
   }
-  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 ">
@@ -48,36 +74,26 @@ export default function ProductPage() {
       <div className="p-4 space-y-6">
         <Searchbar />
         {query && (
-          <p className="mb-4 text-sm text-gray-600">Showing results for <span className="font-semibold">{query}</span></p>
+          <p className="mb-4 text-sm text-gray-600">
+            Showing results for <span className="font-semibold">{query}</span>
+          </p>
         )}
         {!loading && products.length === 0 && (
-          <p className="text-center text-gray-500">No products found for "{query}"</p>
+          <p className="text-center text-gray-500">
+            No products found for "{query}"
+          </p>
         )}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
-        {products.map((product) => (
-          <a
-            key={product._id}
-            href={`/products/${product._id}`}
-            className="group bg-white rounded-xl shadow-sm border hover:shadow-lg transition overflow-hidden"
-          >
-            <div className="bg-gray-100 relative h-44 overflow-hidden">
-              <img src={product.images} alt={product.name} />
-            </div>
-
-            <div className="p-3 space-y-1">
-              <h2 className="font-medium text-gray-800 line-clamp-1">
-                {product.name}
-              </h2>
-              <p className="text-black text-lg font-semibold">
-                ₹ {product.price}
-              </p>
-              <p className="text-sm text-gray-500 group-hover:text-black">
-                View Details →
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
+          <aside className="hidden md:block">
+            <CategorySidebar
+              categories={categories}
+              onChange={handleCategory}
+              activeCategory={category}
+            />
+          </aside>
+          <ProductGrid loading={loading} products={products} />
+        </div>
+          <ProductPagination pagination={pagination} changePage={changePage} />
       </div>
     </div>
   );

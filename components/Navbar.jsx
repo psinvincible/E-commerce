@@ -171,6 +171,10 @@ const handleSearch = (e) => {
             </p>
           </div>
 
+          <form onSubmit={handleSearch} className="p-4">
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Products..." className="w-full border rounded-lg px-3 py-2 "></input>
+          </form>
+
           <div className="flex flex-col gap-3 mt-3">
             <Link
               href="/"
