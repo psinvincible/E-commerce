@@ -2,6 +2,7 @@
 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import BreadCrumbs from "../BreadCrumbs";
 
 export default function OrderCard({ safeOrders }) {
     const router = useRouter();
@@ -42,6 +43,7 @@ export default function OrderCard({ safeOrders }) {
   };
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <BreadCrumbs />
       <h1 className="text-2xl font-bold mb-6">Manage Orders</h1>
       {safeOrders.map((order) => (
         <div key={order._id}>

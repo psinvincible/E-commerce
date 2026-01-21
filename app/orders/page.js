@@ -1,3 +1,4 @@
+import BreadCrumbs from "@/components/BreadCrumbs";
 import { connectDB } from "@/lib/db";
 import { getUserFromCookie } from "@/lib/getUser";
 import Order from "@/models/Order";
@@ -43,6 +44,7 @@ export default async function OrderPage({searchParams}) {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
+      <BreadCrumbs />
       <h1 className="text-2xl font-bold mb-4">My Orders</h1>
         {successFlag?.sucess === "true" && (
             <div className="p-4 mb-6 rounded bg-green-100 text-green-800">🎉Your order has been placed successfully!</div>

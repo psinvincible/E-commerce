@@ -1,5 +1,6 @@
 "use client";
 
+import BreadCrumbs from "@/components/BreadCrumbs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -80,6 +81,7 @@ export default function AdminCategoriesPage() {
 
   return (
     <div className="p-6 max-w-3xl">
+      <BreadCrumbs />
       <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
       <div className="flex gap-2 mb-6">

@@ -1,5 +1,6 @@
 "use client";
 
+import BreadCrumbs from "@/components/BreadCrumbs";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -129,6 +130,7 @@ const AdminAddProducts = () => {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+      <BreadCrumbs />
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
 
       <form

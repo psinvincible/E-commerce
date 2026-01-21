@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import BreadCrumbs from "@/components/BreadCrumbs";
 
 export default function CheckOutPage() {
   const router = useRouter();
@@ -73,6 +74,7 @@ export default function CheckOutPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+      <BreadCrumbs />
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-6">
       <h1 className="text-2xl font-bold mb-1">Checkout</h1>
       <p className="text-sm tex-gra-500 mb-6">Enter your shipping Address</p>

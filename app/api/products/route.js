@@ -71,7 +71,7 @@ export async function GET(req){
         const total = await Product.countDocuments(filter);
         
 
-        return Response.json({products, pagination: {total, page, pages: Math.ceil(total / limit) }})
+        return Response.json({products, pagination: {total, page, pages: Math.ceil(total / limit), limit}})
     } catch (error) {
         return Response.json({error: "failed to fetch products!"},{status: 500});
     }

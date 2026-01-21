@@ -1,5 +1,6 @@
 "use client";
 
+import BreadCrumbs from "@/components/BreadCrumbs";
 import CategorySidebar from "@/components/products/Category";
 import ProductGrid from "@/components/products/ProductGrid";
 import ProductPagination from "@/components/products/ProductPagination";
@@ -70,6 +71,7 @@ export default function ProductPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 ">
+      <BreadCrumbs />
       <h1 className="text-2xl font-bold mb-6">All Products</h1>
       <div className="p-4 space-y-6">
         <Searchbar />

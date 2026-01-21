@@ -1,5 +1,6 @@
 import AdminLink from "@/components/admin/AdminLink";
 import Stat from "@/components/admin/Stat";
+import BreadCrumbs from "@/components/BreadCrumbs";
 import { connectDB } from "@/lib/db"
 import { getUserFromCookie } from "@/lib/getUser";
 import Order from "@/models/Order";
@@ -29,6 +30,7 @@ export default async function AdminDashboard() {
 
   return(
     <div className="p-6 max-w-xl mx-auto">
+      <BreadCrumbs />
     <h1 className="text-3xl font-fold mb-6">Admin Dashboard</h1>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -40,6 +42,7 @@ export default async function AdminDashboard() {
     <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
       <AdminLink href="/admin/orders" label="Manage Orders"/>
       <AdminLink href="/admin/products" label="Manage Products" />
+      <AdminLink href="/admin/categories" label="Manage Categories" />
       <AdminLink href="/admin/user" label="User"/>
       <AdminLink href="/" label="Go to Store"/>
     </div>

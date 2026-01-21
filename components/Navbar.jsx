@@ -81,24 +81,28 @@ const handleSearch = (e) => {
                   
                     <div className="">
                       <Link
+                        onClick={() => setOpenDropdown(null)}
                         href="/admin/dashboard"
                         className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
                         Dashboard
                       </Link>
                       <Link
+                      onClick={() => setOpenDropdown(null)}
                         href="/admin/categories"
                         className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
                         Categories
                       </Link>
                       <Link
+                      onClick={() => setOpenDropdown(null)}
                         href="/admin/products"
                         className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
                         Manage Products
                       </Link>
                       <Link
+                      onClick={() => setOpenDropdown(null)}
                         href="/admin/orders"
                         className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
@@ -122,6 +126,7 @@ const handleSearch = (e) => {
               {openDropdown === "accounts" && (
                 <div className="absolute right-0 mt-2 w-37 bg-white rounded-lg shadow-xl border overflow-hidden">
                   <Link
+                  onClick={() => setOpenDropdown(null)}
                     href="/orders"
                     className="block px-4 py-2 text-sm hover:bg-gray-100"
                   >
@@ -129,6 +134,7 @@ const handleSearch = (e) => {
                   </Link>
 
                   <Link
+                  onClick={() => setOpenDropdown(null)}
                     href="/profile"
                     className="block px-4 py-2 text-sm hover:bg-gray-100"
                   >

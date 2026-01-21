@@ -1,5 +1,6 @@
 "use client"
 
+import BreadCrumbs from "@/components/BreadCrumbs";
 import Spinner from "@/components/Spinner";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
@@ -58,6 +59,7 @@ export default function Cart(id, qty) {
     if(!cart || cart.items.length === 0){
         return (
             <div className="p-6">
+                <BreadCrumbs />
                 <h2 className="text-bold text-xl">Your cart is empty!</h2>
                 <Link href="/" className="text-blue-500">Continue Shopping</Link>
             </div>
