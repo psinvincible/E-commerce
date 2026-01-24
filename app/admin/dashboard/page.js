@@ -43,6 +43,7 @@ export default async function AdminDashboard() {
       <AdminLink href="/admin/orders" label="Manage Orders"/>
       <AdminLink href="/admin/products" label="Manage Products" />
       <AdminLink href="/admin/categories" label="Manage Categories" />
+      <AdminLink href="/admin/contact" label="Contact Messages" />
       <AdminLink href="/admin/user" label="User"/>
       <AdminLink href="/" label="Go to Store"/>
     </div>

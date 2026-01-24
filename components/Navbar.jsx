@@ -108,6 +108,13 @@ const handleSearch = (e) => {
                       >
                         Manage Orders
                       </Link>
+                      <Link
+                      onClick={() => setOpenDropdown(null)}
+                        href="/admin/contact"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Contact Messages
+                      </Link>
                     </div>
                 </div>
               )}
