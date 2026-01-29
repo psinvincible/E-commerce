@@ -28,6 +28,13 @@ export default function Footer(){
                     </div>
                 </div>
 
+                <div>
+                    <h3 className="text-white font-semibold mb-3">Contact Us</h3>
+                    <div className="flex gap-4 text-sm">
+                        <a href="/contact" className="hover:text-white">Enquiry</a>
+                    </div>
+                </div>
+
             </div>
 
             <div className="border-t border-gray-700 text-center text-sm py-4">

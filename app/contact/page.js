@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 export default function ContactPage() {
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -31,6 +32,7 @@ export default function ContactPage() {
             if(!res.ok) throw new Error("failed");
 
             toast.success("Message Sent Successfully!");
+            setSuccess(true);
             setForm({
                 name: "", email: "", message: ""
             })
@@ -46,6 +48,15 @@ export default function ContactPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold mb-2">Contact Us</h1>
+      
+      {success && (
+        <div className="mb-4 rounded-lg bg-green-100 p-4 text-green-700 ">
+          Thank you for contacting us.
+          <br />
+          We will get back to you within <strong>48 hours</strong>.
+        </div>
+      )}
+
       <p className="text-gray-600 mb-8 ">
         Have a question or need help? Send us a message.
       </p>
