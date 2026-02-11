@@ -20,7 +20,7 @@ export async function POST(req) {
     if(!category || !category.isActive){
         return Response.json({error: "Invalid Category!"},{status: 400})
     }
-    console.log(data.category);
+    
     const product = await Product.create({
         name: data.name,
       price: data.price,

@@ -26,7 +26,7 @@ export default function AddToCartBtn({productId}) {
         router.push("/cart");
         
       } catch (error) {
-        console.log(error);
+     
         alert("Please login to add to your cart.");
         router.push("/login");
       }

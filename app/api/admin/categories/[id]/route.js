@@ -23,7 +23,7 @@ export async function PUT(req, {params}){
     const category = await Category.findByIdAndUpdate(
         id, update, {new: true}
     )
-    console.log(category);
+    
     return Response.json({message: "Category Updated"},{status: 201}, category);
 }
 

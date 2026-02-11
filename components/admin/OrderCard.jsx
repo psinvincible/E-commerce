@@ -33,7 +33,7 @@ export default function OrderCard({ safeOrders }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-      console.log(newStatus);
+      
       if (!res.ok) throw new Error("Update failed!");
 
       toast.success("Order status updated!");

@@ -25,7 +25,7 @@ export function CartProvider({ children }) {
                 return;
             }
             const data = await res.json();
-            console.log(data);
+            
             setCount(data.count ?? 0);
         
         } catch (error) {

@@ -51,7 +51,7 @@ export async function POST(req) {
     }
     
     
-    console.log(order);
+  
     return Response.json({ success: true, orderId: order._id });
   } catch (error) {
     console.error("[STRIPE VERIFY ERROR]", error);

@@ -25,7 +25,7 @@ export async function PATCH(req){
     if(!user || user.role !== "ADMIN") return Response.json({error: "Unauthorized"},{status: 401});
 
     const {id , isRead} = await req.json();
-    console.log(id, isRead);
+    
     if(!id || !isRead) return Response.json({error: "Invalid or message already read!"},{status: 400});
 
     await Contact.findByIdAndUpdate(id, {isRead});

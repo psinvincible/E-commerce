@@ -12,7 +12,7 @@ export async function PUT(req, {params}){
 
     const {id} = await params;
     const {reason} = await req.json();
-    console.log(id, reason);
+
     
     const order = await Order.findById(id);
     if(!order){

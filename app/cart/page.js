@@ -21,7 +21,7 @@ export default function Cart(id, qty) {
                 return;
             }
             const data = await res.json();
-            console.log(data);
+       
             setCart(data);
         } catch {
             setCart(null);

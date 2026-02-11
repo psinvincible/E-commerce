@@ -15,7 +15,7 @@ export async function PUT(req, { params }) {
   }
 
   const {status} = await req.json();
-  console.log(id, status);
+  
   if(!status){
     return Response.json({error: "Status is required!"},{status: 400})
   }

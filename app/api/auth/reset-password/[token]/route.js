@@ -9,7 +9,7 @@ export async function POST(req, {params}) {
         const {password} = await req.json();
         const {token} = await params;
 
-        console.log(password, token);
+        
 
         const user = await User.findOne({
             resetPasswordToken: token,

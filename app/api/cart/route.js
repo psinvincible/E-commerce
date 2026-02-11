@@ -36,7 +36,7 @@ export async function POST(req){
         return Response.json({error: "Product not found!"}, {status: 401});
     }
     
-    const cart = await Cart.findOne({userId: user.id});
+    let cart = await Cart.findOne({userId: user.id});
     if(!cart){
         cart = await Cart.create({
             userId: user.id,
