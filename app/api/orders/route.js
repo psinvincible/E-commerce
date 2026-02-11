@@ -11,6 +11,7 @@ export async function POST(req) {
         return Response.json({error: "Please Login to Continue"},{status: 401});
     }
     const {shippingAddress, paymentMethod} = await req.json();
+    console.log(shippingAddress);
     const cart = await Cart.findOne({userId: user.id}).populate("items.productId");
     if(!cart || cart.items.length === 0 ){
         return Response.json({error: "Cart is empty!"},{status: 400});
@@ -29,6 +30,7 @@ export async function POST(req) {
             images: item.productId.images,
         }
     })
+    console.log(orderItems);
     const order = await Order.create({
         userId: user.id,
         items: orderItems,

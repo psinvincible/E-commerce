@@ -51,9 +51,8 @@ export default function Cart(id, qty) {
         });
         fetchCart();
         toast.error("Item removed!")
-    }    
-
-
+    }   
+    
     if(pageLoading) return <Spinner />
 
     if(!cart || cart.items.length === 0){
@@ -92,7 +91,6 @@ export default function Cart(id, qty) {
             <div className="text-right mt-6">
                 <h2 className="text-xl font-bold">Total: ₹{totalPrice}</h2>
                 <Link href="/checkout"><button className="bg-black text-white px-4 py-2 mt-2" >Checkout</button></Link>
-                
             </div>
         </div>
     )

@@ -12,48 +12,48 @@ export default function CheckOutPage() {
 
   const [deliveryInfo, setDeilveryInfo] = useState({
     fullName: "",
-    contact: "",
+    phone: "",
     address: "",
     city: "",
     state: "",
     pincode: "",
-  })
+  });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setDeilveryInfo({...deliveryInfo, [e.target.name]: e.target.value})
-  }
+    setDeilveryInfo({ ...deliveryInfo, [e.target.name]: e.target.value });
+  };
 
   const placeOrder = async (e) => {
     e.preventDefault();
     const { fullName, phone, address, city, state, pincode } = deliveryInfo;
-    if(!fullName || !phone || !address || !city || !state || !pincode){
+    if (!fullName || !phone || !address || !city || !state || !pincode) {
       toast.error("All fields are required!");
       return;
     }
-    if(fullName.trim().length < 3 ){
-      toast.error("Name must be greater than 3 letters")
+    if (fullName.trim().length < 3) {
+      toast.error("Name must be greater than 3 letters");
       return;
     }
-    if(!/^\d{10}$/.test(phone)){
+    if (!/^\d{10}$/.test(phone)) {
       toast.error("Invalid mobile number!");
       return;
     }
-    if(!/^\d{6}$/.test(pincode)){
+    if (!/^\d{6}$/.test(pincode)) {
       toast.error("Invalid Pincode!");
       return;
-    }   
+    }
 
     setLoading(true);
 
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           shippingAddress: deliveryInfo,
           paymentMethod: "COD",
-        })
+        }),
       });
 
       if (!res.ok) {
@@ -72,29 +72,130 @@ export default function CheckOutPage() {
     }
   };
 
+  const handleCheckout = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/checkout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        shippingInfo: deliveryInfo,
+      }),
+    });
+    const data = await res.json();
+    if(!data.ok){
+      toast.error(data.error);
+      return;
+    }
+    window.location.href = data.url;
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4 ">
+      <div className="max-w-3xl mx-auto">
       <BreadCrumbs />
-      <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-6">
-      <h1 className="text-2xl font-bold mb-1">Checkout</h1>
-      <p className="text-sm tex-gra-500 mb-6">Enter your shipping Address</p>
-      <form onSubmit={placeOrder} className="space-y-4">
-        <input name="fullName" type="text" placeholder="  Full Name" onChange={handleChange} disabled={loading} className="w-full bg-gray-200 rounded input" autoFocus/>
-        <input name="phone" type="tel" placeholder="  Contact No." onChange={handleChange} disabled={loading} className="w-full bg-gray-200 rounded input" />
-        <textarea name="address" type="text" rows={3} placeholder="  Address" onChange={handleChange} disabled={loading} className="w-full bg-gray-200 rounded input" />
-        <div className="grid grid-cols-2 gap-3">
-        <input name="city" type="text" placeholder="  City" onChange={handleChange} disabled={loading} className="bg-gray-200 rounded input" />
-        <input name="state" type="text" placeholder="  State" onChange={handleChange} disabled={loading} className="bg-gray-200 rounded input" />
-        </div>
-        <input name="pincode" type="number" inputMode="numeric" placeholder="  Pincode" onChange={handleChange} disabled={loading} className="w-full bg-gray-200 rounded input" />
-      <button
-        disabled={loading}
-        className="w-full bg-black text-white cursor-pointer rounded-xl py-3 font-medium hover:bg-gray-900 transition disabled:opacity-50"
-        >
-        {loading ? "Placing Order..." : "Place Order (COD)"}
-      </button>
+      
+      <div className="mt-6 bg-white shadow-xl rounded-3xl p-8 ">
+        <h1 className="text-3xl font-bold text-gray-800">Checkout</h1>
+        <p className="text-gray-500 mt-1 mb-8">Enter your shipping details below</p>
+
+        <form onSubmit={placeOrder} className="space-y-6">
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input
+            name="fullName"
+            type="text"
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+            autoFocus
+            />
+            </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+          <input
+            name="phone"
+            type="tel"
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+            </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <textarea
+            name="address"
+            type="text"
+            rows={3}
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+            </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+            <input
+              name="city"
+              type="text"
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+              />
+              </div>
+
+              <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+            <input
+              name="state"
+              type="text"
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+              />
+              </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
+          <input
+            name="pincode"
+            type="number"
+            inputMode="numeric"
+            placeholder="  Pincode"
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black transition"
+            />
+            </div>
+
+            <div className="border-t pt-6 space-y-4 ">
+
+              <button
+            disabled={loading}
+            className="w-full bg-black text-white cursor-pointer rounded-xl font-semibold py-3 hover:bg-gray-900 transition-all duration-200  disabled:opacity-50"
+          >
+            {loading ? "Placing Order..." : "Place Order (COD)"}
+          </button>
+
+            {/* pay with stripe button */}
+          <button
+            type="button"
+            onClick={handleCheckout}
+            disabled={loading}
+            className="w-full bg-green-600 text-white cursor-pointer rounded-xl py-3 font-semibold hover:bg-green-700 transition-all duration-200 disabled:opacity-50"
+          >
+            Pay Securely with Stripe
+          </button>
+            </div>
+          
+          
         </form>
-    </div>
+      </div>
+      </div> 
     </div>
   );
 }

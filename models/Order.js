@@ -48,6 +48,11 @@ const orderSchema = new mongoose.Schema(
     cancelReason: {
       type: String,
     },
+
+    metadata: {
+      type: Object,
+      default: {},
+    },
   },
   { timestamps: true }
 );
