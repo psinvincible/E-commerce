@@ -1,7 +1,9 @@
 "use client"
+
 export const dynamic = "force-dynamic";
 
-import ProductContent from "./ProductContent";
+import { Suspense } from "react";
+import ProductsContent from "./ProductsContent";
 
 export default function ProductsPage() {
   return (

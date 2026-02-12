@@ -8,7 +8,7 @@ import Searchbar from "@/components/SearchBar";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ProductContent() {
+export default function ProductsContent() {
   const [pageLoading, setPageLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
