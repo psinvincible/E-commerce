@@ -4,7 +4,7 @@ import Review from "@/components/Review";
 export default async function ProductPage({ params }) {
   const { id } = await params;
 
-  const data = await fetch(`http://localhost:3000/api/products/${id}`, {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products/${id}`, {
     cache: "no-store",
   });
   const product = await data.json();
