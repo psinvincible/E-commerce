@@ -10,10 +10,13 @@ export default async function OrderPage({searchParams}) {
   const successFlag = await searchParams;
   const user = await getUserFromCookie();
   if (!user) {
-    return Response.json(
-      { error: "Please Login to Continue" },
-      { status: 401 }
-    );
+    return (
+      <div className="p-6 max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold mb-2">My Orders</h1>
+        <p className="text-gray-600">User not found. &nbsp;&nbsp;
+          <Link href="/login" className="text-blue-600 underline">Login to see orders.</Link> </p>
+      </div>
+    )
   }
 
   const orders = await Order.find({ userId: user.id }).sort({ createdAt: -1 });
