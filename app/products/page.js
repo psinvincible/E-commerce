@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import BreadCrumbs from "@/components/BreadCrumbs";
 import CategorySidebar from "@/components/products/Category";
 import ProductGrid from "@/components/products/ProductGrid";
